@@ -1,13 +1,15 @@
 package com.wecp.progressive.entity;
 
 public class Warehouse {
+
     private int warehouseId;
     private int supplierId;
     private String warehouseName;
     private String location;
     private int capacity;
 
-    public Warehouse(){}
+    public Warehouse() {
+    }
 
     public Warehouse(int warehouseId, int supplierId, String warehouseName, String location, int capacity) {
         this.warehouseId = warehouseId;
@@ -56,6 +58,4 @@ public class Warehouse {
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
-
-    
 }
