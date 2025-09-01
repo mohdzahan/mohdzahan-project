@@ -1,6 +1,7 @@
 package com.wecp.progressive.entity;
 
-public class Supplier {
+public class Supplier implements Comparable<Supplier> {
+
     private int supplierId;
     private String supplierName;
     private String email;
@@ -88,4 +89,8 @@ public class Supplier {
         this.role = role;
     }
 
+    @Override
+    public int compareTo(Supplier otherSupplier) {
+        return this.getSupplierName().compareTo(otherSupplier.getSupplierName());
+    }
 }
