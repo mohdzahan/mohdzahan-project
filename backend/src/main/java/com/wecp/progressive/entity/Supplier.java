@@ -10,10 +10,10 @@ public class Supplier {
     private String password;
     private String role;
 
-    public Supplier(){}
+    public Supplier() {
+    }
 
-    public Supplier(int supplierId, String supplierName, String email, String phone, String address, String username,
-            String password, String role) {
+    public Supplier(int supplierId, String supplierName, String email, String phone, String address, String username, String password, String role) {
         this.supplierId = supplierId;
         this.supplierName = supplierName;
         this.email = email;
@@ -22,6 +22,10 @@ public class Supplier {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public int getSupplierId() {
@@ -40,8 +44,20 @@ public class Supplier {
         this.supplierName = supplierName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setEmail(String email) {
@@ -64,22 +80,6 @@ public class Supplier {
         this.address = address;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getRole() {
         return role;
     }
@@ -87,5 +87,5 @@ public class Supplier {
     public void setRole(String role) {
         this.role = role;
     }
-    
+
 }
