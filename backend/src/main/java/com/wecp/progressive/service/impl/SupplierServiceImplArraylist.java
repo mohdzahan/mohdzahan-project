@@ -3,34 +3,27 @@ package com.wecp.progressive.service.impl;
 import com.wecp.progressive.entity.Supplier;
 import com.wecp.progressive.service.SupplierService;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class SupplierServiceImplArraylist implements SupplierService {
 
-    private static List<Supplier> supplierList = new ArrayList<>();
-
     @Override
     public List<Supplier> getAllSuppliers() {
-        return supplierList;
+        return List.of();
     }
 
     @Override
     public int addSupplier(Supplier supplier) {
-        supplierList.add(supplier);
-        return supplierList.size();
+        return -1;
     }
 
     @Override
     public List<Supplier> getAllSuppliersSortedByName() {
-        List<Supplier> sortedSupplier = supplierList;
-        sortedSupplier.sort(Comparator.comparing(Supplier::getSupplierName)); // Sort by supplier name
-        return sortedSupplier;
+        return List.of();
     }
 
     @Override
     public void emptyArrayList() {
-        supplierList = new ArrayList<>();
+        SupplierService.super.emptyArrayList();
     }
 }
