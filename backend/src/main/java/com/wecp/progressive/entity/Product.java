@@ -67,5 +67,4 @@ public class Product {
     public void setPrice(Long price) {
         this.price = price;
     }
-
 }
