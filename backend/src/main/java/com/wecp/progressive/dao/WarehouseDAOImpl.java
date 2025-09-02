@@ -1,7 +1,5 @@
 package com.wecp.progressive.dao;
 
-import com.wecp.progressive.config.DatabaseConnectionManager;
-import com.wecp.progressive.entity.Warehouse;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,20 +8,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WarehouseDAOImpl implements WarehouseDAO {
+import com.wecp.progressive.config.DatabaseConnectionManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+import com.wecp.progressive.entity.Warehouse;
+
+public class WarehouseDAOImpl implements WarehouseDAO{
 
     @Override
-    public int addWarehouse(Warehouse warehouse) throws SQLException {
+    public int addWarehouse(Warehouse warehouse) throws SQLException{
         Connection connection = null;
         PreparedStatement statement = null;
         int generatedID = -1;
-
+        
         try {
             connection = DatabaseConnectionManager.getConnection();
-            String sql = "INSERT INTO warehouse (supplier_id, warehouse_name, location, capacity) VALUES (?, ?, ?, ?)";
-            statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            String sql = "INSERT INTO warehouse (supplier_id, warehouse_name, location, capacity) VALUES (?,?,?,?)";
+            statement = connection.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, warehouse.getSupplierId());
-            statement.setString(2, warehouse.getWarehouseName());
+            statement.setString(2,warehouse.getWarehouseName());
             statement.setString(3, warehouse.getLocation());
             statement.setDouble(4, warehouse.getCapacity());
             statement.executeUpdate();
@@ -35,10 +41,9 @@ public class WarehouseDAOImpl implements WarehouseDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e; // Rethrow the exception
-        } finally {
-            // Close resources in the reverse order of opening
-            if (statement != null) {
+            throw e;
+        }finally{
+            if(statement != null){
                 statement.close();
             }
         }
@@ -46,63 +51,7 @@ public class WarehouseDAOImpl implements WarehouseDAO {
     }
 
     @Override
-    public Warehouse getWarehouseById(int warehouseId) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = DatabaseConnectionManager.getConnection();
-            String sql = "SELECT * FROM warehouse WHERE warehouse_id = ?";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, warehouseId);
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                int supplierId = resultSet.getInt("supplier_id");
-                String warehouseName = resultSet.getString("warehouse_name");
-                String location = resultSet.getString("location");
-                int capacity = resultSet.getInt("capacity");
-                return new Warehouse(warehouseId, supplierId, warehouseName, location, capacity);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e; // Rethrow the exception
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void updateWarehouse(Warehouse warehouse) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-
-        try {
-            connection = DatabaseConnectionManager.getConnection();
-            String sql = "UPDATE warehouse SET supplier_id =?, warehouse_name =?, location =?, capacity =? WHERE warehouse_id = ?";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, warehouse.getSupplierId());
-            statement.setString(2, warehouse.getWarehouseName());
-            statement.setString(3, warehouse.getLocation());
-            statement.setInt(4, warehouse.getCapacity());
-            statement.setInt(5, warehouse.getWarehouseId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e; // Rethrow the exception
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    @Override
-    public void deleteWarehouse(int warehouseId) throws SQLException {
+    public void deleteWarehouse(int warehouseId) throws SQLException{
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -114,44 +63,103 @@ public class WarehouseDAOImpl implements WarehouseDAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e; // Rethrow the exception
-        } finally {
-            if (connection != null) {
-                connection.close();
+            throw e;
+        }finally{
+            if(statement != null){
+                statement.close();
             }
         }
     }
 
     @Override
-    public List<Warehouse> getAllWarehouse() throws SQLException {
-        List<Warehouse> warehouses = new ArrayList<>();
+    public List<Warehouse> getAllWarehouse() throws SQLException{
+       List<Warehouse> warehouses = new ArrayList<>();
+       Connection connection = null;
+       PreparedStatement statement = null;
+       ResultSet resultSet = null;
+
+       try {
+        connection = DatabaseConnectionManager.getConnection();
+        String sql = "SELECT * FROM warehouse";
+        statement = connection.prepareStatement(sql);
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            int warehouseId = resultSet.getInt("warehouse_id");
+            int supplierId = resultSet.getInt("supplier_id");
+            String warehouseName = resultSet.getString("warehouse_name");
+            String location = resultSet.getString("location");
+            int capacity = resultSet.getInt("capacity");
+            warehouses.add(new Warehouse(warehouseId, supplierId, warehouseName, location, capacity));
+        }
+       } catch (SQLException e) {
+        e.printStackTrace();
+        throw e;
+       }finally{
+        if(statement != null){
+            statement.close();
+        }
+       }
+
+       return warehouses;
+
+    }
+
+    @Override
+    public Warehouse getWarehouseById(int warehouseId) throws SQLException{
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
             connection = DatabaseConnectionManager.getConnection();
-            String sql = "SELECT * FROM warehouse";
+            String sql = "SELECT * FROM warehouse WHERE warehouse_id = ?";
             statement = connection.prepareStatement(sql);
+            statement.setInt(1,warehouseId);
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                int warehouseId = resultSet.getInt("warehouse_id");
+            if(resultSet.next()){
                 int supplierId = resultSet.getInt("supplier_id");
                 String warehouseName = resultSet.getString("warehouse_name");
                 String location = resultSet.getString("location");
                 int capacity = resultSet.getInt("capacity");
-                warehouses.add(new Warehouse(warehouseId, supplierId, warehouseName, location, capacity));
+                return new Warehouse(warehouseId, supplierId, warehouseName, location, capacity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e; // Rethrow the exception
-        } finally {
-            if (connection != null) {
-                connection.close();
+            throw e;
+        }finally{
+            if(statement != null){
+                statement.close();
             }
         }
-
-        return warehouses;
+        return null;
     }
+
+    @Override
+    public void updateWarehouse(Warehouse warehouse) throws SQLException{
+        Connection connection = null;
+        PreparedStatement statement = null;
+        
+        try {
+            connection = DatabaseConnectionManager.getConnection();
+            String sql = "UPDATE warehouse SET supplier_id=?, warehouse_name=?, location=?, capacity = ? WHERE warehouse_id = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, warehouse.getSupplierId());
+            statement.setString(2,warehouse.getWarehouseName());
+            statement.setString(3, warehouse.getLocation());
+            statement.setDouble(4, warehouse.getCapacity());
+            statement.setInt(5,warehouse.getWarehouseId());
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }finally{
+            if(statement != null){
+                statement.close();
+            }
+        }
+    }
+    
 }
