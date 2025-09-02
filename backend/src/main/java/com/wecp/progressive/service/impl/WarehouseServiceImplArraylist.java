@@ -1,39 +1,55 @@
 package com.wecp.progressive.service.impl;
 
-import com.wecp.progressive.entity.Supplier;
-import com.wecp.progressive.entity.Warehouse;
-import com.wecp.progressive.service.WarehouseService;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.wecp.progressive.entity.Supplier;
+
+import java.util.List;
+
+
+import com.wecp.progressive.entity.Warehouse;
+import com.wecp.progressive.service.WarehouseService;
+
 @Service
-public class WarehouseServiceImplArraylist implements WarehouseService {
+public class WarehouseServiceImplArraylist  implements WarehouseService{
 
-    private static List<Warehouse> warehouseList = new ArrayList<>();
 
-    @Override
-    public List<Warehouse> getAllWarehouses() {
-        return warehouseList;
-    }
+    private static List<Warehouse> warehouses = new ArrayList<>();
 
     @Override
     public int addWarehouse(Warehouse warehouse) {
-        warehouseList.add(warehouse);
-        return warehouseList.size();
+        warehouses.add(warehouse);
+        return warehouses.size();
     }
-
-    @Override
-    public List<Warehouse> getWarehousesSortedByCapacity() {
-        List<Warehouse> sortedWarehouses = warehouseList;
-        sortedWarehouses.sort(Comparator.comparing(Warehouse::getCapacity)); // Sort by supplier name
-        return sortedWarehouses;
-    }
+  
 
     @Override
     public void emptyArrayList() {
-        warehouseList = new ArrayList<>();
+        warehouses = new ArrayList<>();
     }
+
+    @Override
+    public List<Warehouse> getAllWarehouses() {
+
+        return warehouses;
+    }
+
+
+    @Override
+    public List<Warehouse> getWarehousesSortedByCapacity() {
+        List<Warehouse> sortedWareHouse = new ArrayList<>(warehouses);
+        sortedWareHouse.sort(Comparator.comparing(Warehouse::getCapacity));
+        return sortedWareHouse;
+
+       
+    }
+
+    
+    
 }
