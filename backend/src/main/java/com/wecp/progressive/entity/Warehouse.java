@@ -1,3 +1,4 @@
+
 package com.wecp.progressive.entity;
 
 import javax.persistence.Entity;
@@ -6,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Warehouse implements Comparable<Warehouse> {
+public class Warehouse implements Comparable<Warehouse>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +17,13 @@ public class Warehouse implements Comparable<Warehouse> {
     private String location;
     private int capacity;
 
+    
+
     public Warehouse() {
     }
+
+    
+
 
     public Warehouse(int warehouseId, int supplierId, String warehouseName, String location, int capacity) {
         this.warehouseId = warehouseId;
@@ -27,25 +33,45 @@ public class Warehouse implements Comparable<Warehouse> {
         this.capacity = capacity;
     }
 
+    
+
+
+
+
     public int getWarehouseId() {
         return warehouseId;
     }
+
+
+
 
     public void setWarehouseId(int warehouseId) {
         this.warehouseId = warehouseId;
     }
 
+
+
+
     public int getSupplierId() {
         return supplierId;
     }
+
+
+
 
     public void setSupplierId(int supplierId) {
         this.supplierId = supplierId;
     }
 
+
+
+
     public String getWarehouseName() {
         return warehouseName;
     }
+
+
+
 
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
@@ -68,8 +94,8 @@ public class Warehouse implements Comparable<Warehouse> {
     }
 
     @Override
-    public int compareTo(Warehouse otherWarehouse) {
-        // Implement comparison logic based on warehouse capacity
-        return Double.compare(otherWarehouse.getCapacity(), this.getCapacity());
+    public int compareTo(Warehouse o) {
+       return Double.compare(o.getCapacity(), this.getCapacity());
     }
-}	
+   
+}
