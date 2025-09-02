@@ -2,15 +2,23 @@ package com.wecp.progressive.controller;
 
 import com.wecp.progressive.entity.Supplier;
 import com.wecp.progressive.service.impl.SupplierServiceImplArraylist;
+import com.wecp.progressive.service.impl.SupplierServiceImplJdbc;
 import com.wecp.progressive.service.impl.SupplierServiceImplJpa;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/supplier")
@@ -23,18 +31,18 @@ public class SupplierController {
     SupplierServiceImplJpa supplierServiceImplJpa;
 
     @GetMapping
-    public ResponseEntity<List<Supplier>> getAllSuppliers() throws SQLException {
+    public ResponseEntity<List<Supplier>> getAllSuppliers() throws SQLException{
         List<Supplier> suppliers = supplierServiceImplJpa.getAllSuppliers();
         return new ResponseEntity<>(suppliers, HttpStatus.OK);
     }
 
     @GetMapping("/{supplierId}")
-    public ResponseEntity<Supplier> getSupplierById(@PathVariable int supplierId) throws SQLException {
+    public ResponseEntity<Supplier> getSupplierById(@PathVariable int supplierId) throws SQLException{
         try {
             Supplier supplier = supplierServiceImplJpa.getSupplierById(supplierId);
-            if (supplier != null) {
+            if(supplier != null){
                 return new ResponseEntity<>(supplier, HttpStatus.OK);
-            } else {
+            }else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (SQLException e) {
@@ -80,7 +88,7 @@ public class SupplierController {
     }
 
     @PostMapping("/toArrayList")
-    public ResponseEntity<Integer> addSupplierToArrayList(@RequestBody Supplier supplier) {
+    public ResponseEntity<Integer> addSupplierToArrayList(Supplier supplier) {
         int listSize = supplierServiceImplArraylist.addSupplier(supplier);
         return new ResponseEntity<>(listSize, HttpStatus.CREATED);
     }
