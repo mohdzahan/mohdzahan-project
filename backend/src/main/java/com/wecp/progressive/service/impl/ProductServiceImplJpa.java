@@ -1,52 +1,52 @@
 package com.wecp.progressive.service.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.wecp.progressive.dao.ProductDAO;
 import com.wecp.progressive.entity.Product;
 import com.wecp.progressive.repository.ProductRepository;
 import com.wecp.progressive.service.ProductService;
 
-public class ProductServiceImplJpa  implements ProductService{
+@Service
+public class ProductServiceImplJpa implements ProductService  {
 
-    @Autowired
     private ProductRepository productRepository;
-    
 
-
-    public ProductServiceImplJpa(ProductRepository productRepository) {
+    public ProductServiceImplJpa (ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
-    public List<Product> getAllProducts() throws SQLException{
-        return List.of();
-    }
-
-    public int getProductbyId(int productId) throws SQLException{
-        return -1;
-    }
-
-    public int addProduct(Product product) throws SQLException{
-        return -1;
-    }
-
-    public void updateProduct(Product product) throws SQLException{
-      
-    }
-
-    public void deleteProduct(int productId) throws SQLException{
-
-    }
-
    
+    @Override
+    public List<Product> getAllProducts() {
+        // TODO Auto-generated method stub
+        return productRepository.findAll();
+    }
 
     @Override
-    public Product getProductById(int productId) throws SQLException {
-       return null;
+    public Product getProductById(int productId) {
+        // TODO Auto-generated method stub
+        return productRepository.findById(productId).get();
     }
 
+    @Override
+    public int addProduct(Product product) {
+        // TODO Auto-generated method stub
+        return productRepository.save(product).getProductId();
+    }
 
+    @Override
+    public void updateProduct(Product product) {
+        // TODO Auto-generated method stub
+        productRepository.save(product);
+    }
+
+    @Override
+    public void deleteProduct(int productId) {
+        // TODO Auto-generated method stub
+        productRepository.deleteById(productId);
+        
+    }
 
 }
