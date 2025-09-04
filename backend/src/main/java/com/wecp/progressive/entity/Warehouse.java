@@ -1,77 +1,51 @@
-
 package com.wecp.progressive.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Warehouse implements Comparable<Warehouse>{
+public class Warehouse implements Comparable<Warehouse> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int warehouseId;
-    private int supplierId;
+    
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "supplierId")
+    private Supplier supplier;
     private String warehouseName;
     private String location;
     private int capacity;
 
-    
-
     public Warehouse() {
     }
 
-    
-
-
     public Warehouse(int warehouseId, int supplierId, String warehouseName, String location, int capacity) {
         this.warehouseId = warehouseId;
-        this.supplierId = supplierId;
+        this.supplier.setSupplierId(supplierId);
         this.warehouseName = warehouseName;
         this.location = location;
         this.capacity = capacity;
     }
 
-    
-
-
-
-
     public int getWarehouseId() {
         return warehouseId;
     }
-
-
-
 
     public void setWarehouseId(int warehouseId) {
         this.warehouseId = warehouseId;
     }
 
-
-
-
-    public int getSupplierId() {
-        return supplierId;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-
-
-
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
-
-
-
 
     public String getWarehouseName() {
         return warehouseName;
     }
-
-
-
 
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
@@ -94,8 +68,7 @@ public class Warehouse implements Comparable<Warehouse>{
     }
 
     @Override
-    public int compareTo(Warehouse o) {
-       return Double.compare(o.getCapacity(), this.getCapacity());
+    public int compareTo(Warehouse otherWarehouse) {        
+        return Double.compare(otherWarehouse.getCapacity(), this.getCapacity());
     }
-   
 }
