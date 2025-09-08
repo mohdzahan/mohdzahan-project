@@ -68,7 +68,8 @@ public class Warehouse implements Comparable<Warehouse> {
     }
 
     @Override
-    public int compareTo(Warehouse otherWarehouse) {        
+    public int compareTo(Warehouse otherWarehouse) {
+        // Implement comparison logic based on warehouse capacity
         return Double.compare(otherWarehouse.getCapacity(), this.getCapacity());
     }
 }
