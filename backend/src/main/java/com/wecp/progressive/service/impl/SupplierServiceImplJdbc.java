@@ -36,7 +36,6 @@ public class SupplierServiceImplJdbc implements SupplierService  {
         }
         return sortedSuppliers;
     }
-
     @Override
     public void updateSupplier(Supplier supplier) throws SQLException {
         supplierDAO.updateSupplier(supplier);
