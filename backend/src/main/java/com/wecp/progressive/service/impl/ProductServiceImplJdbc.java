@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.wecp.progressive.dao.ProductDAO;
 
-
 import com.wecp.progressive.entity.Product;
 import com.wecp.progressive.service.ProductService;
 
