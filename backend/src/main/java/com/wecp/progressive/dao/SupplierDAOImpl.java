@@ -3,7 +3,6 @@
 
 import com.wecp.progressive.config.DatabaseConnectionManager;
 import com.wecp.progressive.entity.Supplier;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
