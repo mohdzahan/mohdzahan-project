@@ -76,7 +76,6 @@ public class ProductDAOImpl implements ProductDAO {
         }
         
     }
-
     @Override
     public void updateProduct(Product product) throws SQLException {
         String sql = "UPDATE product SET  warehouse_id = ?, product_name = ?, product_description = ?, quantity = ?, price = ? WHERE product_id = ?";
