@@ -46,8 +46,6 @@ public class WarehouseServiceImplArraylist  implements WarehouseService{
         List<Warehouse> sortedWareHouse = new ArrayList<>(warehouses);
         sortedWareHouse.sort(Comparator.comparing(Warehouse::getCapacity));
         return sortedWareHouse;
-
-       
     }
 
     
