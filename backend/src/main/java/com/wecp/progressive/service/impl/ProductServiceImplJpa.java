@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.wecp.progressive.dao.ProductDAO;
 import com.wecp.progressive.entity.Product;
 import com.wecp.progressive.exception.InsufficientCapacityException;
@@ -33,7 +32,7 @@ public class ProductServiceImplJpa implements ProductService  {
 
     @Override
     public Product getProductById(int productId) {
-        return productRepository.findById(productId).get();
+        return productRepository.findByProductId(productId);
     }
 
     @Override
