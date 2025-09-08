@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +40,8 @@ public class SupplierServiceImplJpa implements SupplierService {
 
     @Override
     public int addSupplier(Supplier supplier) throws SQLException {
+        if(supplierRepository.findByEmail(supplier.getEmail()) != null && supplierRepository.findByUsername(supplier.getUsername()) != null)
+            throw new SupplierAlreadyExistsException("Supplier already exists with this email or username");
         return supplierRepository.save(supplier).getSupplierId();
     }
 
@@ -54,7 +55,6 @@ public class SupplierServiceImplJpa implements SupplierService {
     @Override
     public void updateSupplier(Supplier supplier) throws SQLException {
             supplierRepository.save(supplier);
-        
     }
 
     @Override
