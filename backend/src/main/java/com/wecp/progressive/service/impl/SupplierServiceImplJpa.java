@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -20,13 +21,19 @@ import java.util.List;
 @Service
 public class SupplierServiceImplJpa implements SupplierService {
 
-    private final SupplierRepository supplierRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    WarehouseRepository warehouseRepository;
 
     @Autowired
     ProductRepository productRepository;
 
     @Autowired
-    WarehouseRepository warehouseRepository;
+    ShipmentRepository shipmentRepository;
+
+    private final SupplierRepository supplierRepository;
 
     @Autowired
     public SupplierServiceImplJpa(SupplierRepository supplierRepository) {
@@ -39,9 +46,16 @@ public class SupplierServiceImplJpa implements SupplierService {
     }
 
     @Override
-    public int addSupplier(Supplier supplier) throws SQLException {
-        if(supplierRepository.findByEmail(supplier.getEmail()) != null && supplierRepository.findByUsername(supplier.getUsername()) != null)
-            throw new SupplierAlreadyExistsException("Supplier already exists with this email or username");
+    public int addSupplier(Supplier supplier) throws SupplierAlreadyExistsException {
+        Supplier oldUser = supplierRepository.findByUsername(supplier.getUsername());
+        if (oldUser != null) {
+            throw new SupplierAlreadyExistsException("User name Is Unavailable: " + supplier.getUsername());
+        }
+        Supplier existingEmail = supplierRepository.findByEmail(supplier.getEmail());
+        if (existingEmail != null) {
+            throw new SupplierAlreadyExistsException("User with the given email address already exists: " + supplier.getEmail());
+        }
+        supplier.setPassword(passwordEncoder.encode(supplier.getPassword()));
         return supplierRepository.save(supplier).getSupplierId();
     }
 
@@ -53,13 +67,23 @@ public class SupplierServiceImplJpa implements SupplierService {
     }
 
     @Override
-    public void updateSupplier(Supplier supplier) throws SQLException {
+    public void updateSupplier(Supplier supplier) throws SupplierAlreadyExistsException {
+        if (!supplier.getRole().isBlank()) {
+            Supplier oldUser = supplierRepository.findByUsername(supplier.getUsername());
+           if (oldUser != null && oldUser.getSupplierId() != supplier.getSupplierId()) {
+                throw new SupplierAlreadyExistsException("User name Is Unavailable: " + supplier.getUsername());
+            }
+            if (!oldUser.getPassword().equals(supplier.getPassword())) {
+                supplier.setPassword(passwordEncoder.encode(supplier.getPassword()));
+            }
             supplierRepository.save(supplier);
+        }
     }
 
     @Override
     @Transactional
     public void deleteSupplier(int supplierId) throws SQLException {
+        shipmentRepository.deleteBySupplierId(supplierId);
         productRepository.deleteBySupplierId(supplierId);
         warehouseRepository.deleteBySupplierId(supplierId);
         supplierRepository.deleteBySupplierId(supplierId);
