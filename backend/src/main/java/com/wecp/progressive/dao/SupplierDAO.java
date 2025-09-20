@@ -1,7 +1,6 @@
 package com.wecp.progressive.dao;
 
 import com.wecp.progressive.entity.Supplier;
-
 import java.sql.SQLException;
 import java.util.List;
 
