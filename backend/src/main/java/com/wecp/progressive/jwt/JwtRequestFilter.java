@@ -1,6 +1,4 @@
 package com.wecp.progressive.jwt;
-
-
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
