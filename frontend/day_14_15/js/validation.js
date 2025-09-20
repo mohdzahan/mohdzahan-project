@@ -18,14 +18,12 @@ function register() {
         alert("All fields are mandatory. Please fill in all the details.");
         return;
     }
-
     // Validate email format
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         alert("Please enter a valid email address.");
         return;
     }
-
     // Validate username (no special characters)
     var usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!usernameRegex.test(username)) {
